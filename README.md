@@ -1,4 +1,4 @@
-#node-red-contrib-vts
+# node-red-contrib-vts
 
 VtubeStudio integration for Node-RED
 
