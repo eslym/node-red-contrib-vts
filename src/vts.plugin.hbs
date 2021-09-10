@@ -1,0 +1,54 @@
+<script type="text/javascript">
+    RED.nodes.registerType('{{ basename }}', {
+        category: 'config',
+        icon: 'icon.png',
+        color: '#f9e6e5',
+        defaults: {
+            endpoint: {
+                value: "ws://127.0.0.1:8001",
+                required: true,
+            },
+            name: {
+                value: "",
+                required: true
+            },
+            developer: {
+                value: "",
+                required: true
+            },
+            vtsIcon: {
+                value: "",
+                required: false
+            },
+            store: {
+                value: null,
+                required: true
+            },
+        },
+        exportable: true,
+        label: function () {
+            return this.name || 'VTS Client';
+        },
+        oneditprepare: function () {
+            $('#node-config-input-store').append(
+                    RED.settings.context.stores.map((v) => {
+                        return $(document.createElement('option'))
+                                .attr('value', v)
+                                .text(v);
+                    })
+            ).find(`[value="${this.store}"]`)
+                    .attr('selected', '');
+        },
+        paletteLabel: 'VTS Client'
+    });
+</script>
+<script type="text/html" data-template-name="{{basename}}">
+        {{> input-field property="endpoint" label="Endpoint" placeholder="Endpoint" type="url" config=true }}
+        {{> input-field property="name" label="Name" placeholder="Name" config=true }}
+        {{> input-field property="developer" label="Developer" placeholder="Developer" config=true }}
+        {{> input-field property="vtsIcon" label="Icon" placeholder="Icon" config=true }}
+        {{#> select-field property="store" label="Token Store" config=true }}
+        {{/select-field}}
+</script>
+<script type="text/html" data-help-name="{{basename}}">
+</script>

@@ -1,0 +1,71 @@
+<script type="text/javascript">
+    RED.nodes.registerType('{{ basename }}', {
+        category: 'VTube Studio',
+        icon: 'icon.png',
+        color: '#f9e6e5',
+        defaults: {
+            name: {
+                value: "",
+                required: false
+            },
+            plugin: {
+                value: "",
+                required: true,
+                type: 'vts.plugin'
+            },
+            request: {
+                value: "topic",
+                required: true
+            },
+            payload: {
+                value: "payload",
+                required: true
+            },
+            requestsrc: {
+                value: "msg",
+                required: true
+            },
+            payloadsrc: {
+                value: "msg",
+                required: true
+            },
+        },
+        inputs: 1,
+        outputs: 2,
+        exportable: true,
+        label: function () {
+            if(this.requestsrc === 'str'){
+                return this.request;
+            }
+            return this.name || 'VTS Request';
+        },
+        oneditprepare: function () {
+            $('#node-input-request').typedInput({
+                default: 'msg',
+                types: ['msg', 'flow', 'global', 'env', {
+                    value: 'str',
+                    label: 'Request',
+                    options: {{json data.requests }}
+                }],
+                typeField: '#node-input-requestsrc'
+            });
+            $('#node-input-payload').typedInput({
+                default: 'msg',
+                types: ['msg', 'flow', 'global', 'env', 'json'],
+                typeField: '#node-input-payloadsrc',
+            });
+        },
+        paletteLabel: 'VTS Request'
+    });
+</script>
+<script type="text/html" data-template-name="{{basename}}">
+        {{> input-field property="name" label="Name" placeholder="Name" }}
+        {{> input-field property="plugin" label="VTS Client" placeholder="VTS Client" }}
+        {{> input-field property="request" label="Request" placeholder="Request" }}
+        {{> input-field property="payload" label="Request Payload" placeholder="Payload" }}
+    <input id="node-input-requestsrc" type="hidden"/>
+    <input id="node-input-payloadsrc" type="hidden"/>
+</script>
+<script type="text/html" data-help-name="{{basename}}">
+<p>Please refer to <a href="https://github.com/DenchiSoft/VTubeStudio">VTube Studio API Doc</a></p>
+</script>

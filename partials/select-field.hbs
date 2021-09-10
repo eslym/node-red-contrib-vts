@@ -1,0 +1,6 @@
+<div class="form-row">
+    <label for="node{{#if config}}-config{{/if}}-input-{{property}}"><i class="{{#if icon }}{{icon}}{{/if}}"></i> {{label}}</label>
+    <select id="node{{#if config}}-config{{/if}}-input-{{property}}">
+        {{> @partial-block}}
+    </select>
+</div>

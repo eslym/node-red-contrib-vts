@@ -1,0 +1,310 @@
+[
+  {
+    "id": "fdb99deefcbf5265",
+    "type": "tab",
+    "label": "VTS Auto Hide Model",
+    "disabled": false,
+    "info": ""
+  },
+  {
+    "id": "dbb0e0e506838c92",
+    "type": "vts.request",
+    "z": "fdb99deefcbf5265",
+    "name": "",
+    "plugin": "19a11cf490ff7ec4",
+    "request": "FaceFoundRequest",
+    "payload": "null",
+    "requestsrc": "str",
+    "payloadsrc": "json",
+    "x": 520,
+    "y": 120,
+    "wires": [
+      [
+        "88344a558512a54d",
+        "e707b3cf7e5293d2"
+      ],
+      []
+    ]
+  },
+  {
+    "id": "b39ce769a1adb13f",
+    "type": "status",
+    "z": "fdb99deefcbf5265",
+    "name": "VTS Status",
+    "scope": [
+      "dbb0e0e506838c92"
+    ],
+    "x": 150,
+    "y": 120,
+    "wires": [
+      [
+        "e842e3e950b7d9b8"
+      ]
+    ]
+  },
+  {
+    "id": "e842e3e950b7d9b8",
+    "type": "switch",
+    "z": "fdb99deefcbf5265",
+    "name": "On Ready",
+    "property": "status.text",
+    "propertyType": "msg",
+    "rules": [
+      {
+        "t": "eq",
+        "v": "ready",
+        "vt": "str"
+      }
+    ],
+    "checkall": "true",
+    "repair": false,
+    "outputs": 1,
+    "x": 310,
+    "y": 120,
+    "wires": [
+      [
+        "dbb0e0e506838c92"
+      ]
+    ]
+  },
+  {
+    "id": "88344a558512a54d",
+    "type": "link out",
+    "z": "fdb99deefcbf5265",
+    "name": "",
+    "links": [
+      "a9a62cf5382b31d7"
+    ],
+    "x": 655,
+    "y": 80,
+    "wires": []
+  },
+  {
+    "id": "a9a62cf5382b31d7",
+    "type": "link in",
+    "z": "fdb99deefcbf5265",
+    "name": "",
+    "links": [
+      "88344a558512a54d"
+    ],
+    "x": 255,
+    "y": 60,
+    "wires": [
+      [
+        "fc5f50165d36d3ea"
+      ]
+    ]
+  },
+  {
+    "id": "fc5f50165d36d3ea",
+    "type": "delay",
+    "z": "fdb99deefcbf5265",
+    "name": "",
+    "pauseType": "delay",
+    "timeout": "1",
+    "timeoutUnits": "seconds",
+    "rate": "1",
+    "nbRateUnits": "1",
+    "rateUnits": "second",
+    "randomFirst": "1",
+    "randomLast": "5",
+    "randomUnits": "seconds",
+    "drop": false,
+    "allowrate": false,
+    "x": 340,
+    "y": 60,
+    "wires": [
+      [
+        "dbb0e0e506838c92"
+      ]
+    ]
+  },
+  {
+    "id": "e707b3cf7e5293d2",
+    "type": "rbe",
+    "z": "fdb99deefcbf5265",
+    "name": "",
+    "func": "rbe",
+    "gap": "",
+    "start": "",
+    "inout": "out",
+    "septopics": false,
+    "property": "payload",
+    "topi": "topic",
+    "x": 690,
+    "y": 120,
+    "wires": [
+      [
+        "5f20be28afb39f97"
+      ]
+    ]
+  },
+  {
+    "id": "7ca1b470e6decb10",
+    "type": "vts.request",
+    "z": "fdb99deefcbf5265",
+    "name": "",
+    "plugin": "19a11cf490ff7ec4",
+    "request": "CurrentModelRequest",
+    "payload": "null",
+    "requestsrc": "str",
+    "payloadsrc": "json",
+    "x": 200,
+    "y": 220,
+    "wires": [
+      [
+        "a0d2148d799108e0"
+      ],
+      []
+    ]
+  },
+  {
+    "id": "a0d2148d799108e0",
+    "type": "switch",
+    "z": "fdb99deefcbf5265",
+    "name": "",
+    "property": "face",
+    "propertyType": "msg",
+    "rules": [
+      {
+        "t": "true"
+      },
+      {
+        "t": "false"
+      }
+    ],
+    "checkall": "false",
+    "repair": false,
+    "outputs": 2,
+    "x": 370,
+    "y": 220,
+    "wires": [
+      [
+        "1508855fcd791725"
+      ],
+      [
+        "22e73931bd52da45"
+      ]
+    ]
+  },
+  {
+    "id": "5f20be28afb39f97",
+    "type": "change",
+    "z": "fdb99deefcbf5265",
+    "name": "",
+    "rules": [
+      {
+        "t": "move",
+        "p": "payload.found",
+        "pt": "msg",
+        "to": "face",
+        "tot": "msg"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 870,
+    "y": 120,
+    "wires": [
+      [
+        "7ca1b470e6decb10"
+      ]
+    ]
+  },
+  {
+    "id": "22e73931bd52da45",
+    "type": "switch",
+    "z": "fdb99deefcbf5265",
+    "name": "",
+    "property": "payload.modelPosition.positionY",
+    "propertyType": "msg",
+    "rules": [
+      {
+        "t": "gt",
+        "v": "-5",
+        "vt": "str"
+      }
+    ],
+    "checkall": "true",
+    "repair": false,
+    "outputs": 1,
+    "x": 510,
+    "y": 240,
+    "wires": [
+      [
+        "494fe812b4586888"
+      ]
+    ]
+  },
+  {
+    "id": "1508855fcd791725",
+    "type": "switch",
+    "z": "fdb99deefcbf5265",
+    "name": "",
+    "property": "payload.modelPosition.positionY",
+    "propertyType": "msg",
+    "rules": [
+      {
+        "t": "lte",
+        "v": "-5",
+        "vt": "str"
+      }
+    ],
+    "checkall": "true",
+    "repair": false,
+    "outputs": 1,
+    "x": 510,
+    "y": 200,
+    "wires": [
+      [
+        "3b4049541169db19"
+      ]
+    ]
+  },
+  {
+    "id": "494fe812b4586888",
+    "type": "vts.request",
+    "z": "fdb99deefcbf5265",
+    "name": "",
+    "plugin": "19a11cf490ff7ec4",
+    "request": "MoveModelRequest",
+    "payload": "{\"timeInSeconds\":1,\"valuesAreRelativeToModel\":true,\"positionY\":-10}",
+    "requestsrc": "str",
+    "payloadsrc": "json",
+    "x": 680,
+    "y": 240,
+    "wires": [
+      [],
+      []
+    ]
+  },
+  {
+    "id": "3b4049541169db19",
+    "type": "vts.request",
+    "z": "fdb99deefcbf5265",
+    "name": "",
+    "plugin": "19a11cf490ff7ec4",
+    "request": "MoveModelRequest",
+    "payload": "{\"timeInSeconds\":1,\"valuesAreRelativeToModel\":true,\"positionY\":10}",
+    "requestsrc": "str",
+    "payloadsrc": "json",
+    "x": 680,
+    "y": 200,
+    "wires": [
+      [],
+      []
+    ]
+  },
+  {
+    "id": "19a11cf490ff7ec4",
+    "type": "vts.plugin",
+    "endpoint": "ws://127.0.0.1:8001",
+    "name": "Auto Hide Model",
+    "developer": "0nepeop1e",
+    "vtsIcon": "",
+    "store": "file"
+  }
+]

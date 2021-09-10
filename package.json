@@ -1,0 +1,42 @@
+{
+  "name": "node-red-contrib-vts",
+  "version": "1.0.0",
+  "description": "VtubeStudio integration for Node-RED",
+  "files": [
+    "dist/**/*"
+  ],
+  "scripts": {
+    "build": "gulp build",
+    "clean": "gulp clean",
+    "clean-build": "gulp clean-build"
+  },
+  "keywords": [
+    "node-red",
+    "vtubestudio"
+  ],
+  "author": "0nepeop1e",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^16.7.10",
+    "@types/node-red": "^1.1.1",
+    "@types/ws": "^7.4.7",
+    "gulp": "^4.0.2",
+    "gulp-clean": "^0.4.0",
+    "gulp-typescript": "^6.0.0-alpha.1",
+    "gulp-util": "^3.0.8",
+    "handlebars": "^4.7.7",
+    "json5": "^2.2.0",
+    "through2": "^4.0.2",
+    "typescript": "^4.4.2"
+  },
+  "dependencies": {
+    "serialize-error": "^8.1.0",
+    "ws": "^8.2.2"
+  },
+  "node-red": {
+    "nodes": {
+      "vts.plugin": "dist/vts.plugin.js",
+      "vts.request": "dist/vts.request.js"
+    }
+  }
+}
