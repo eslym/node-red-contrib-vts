@@ -49,6 +49,7 @@ export default module.exports = ((RED)=>{
         }
         let updateStatus = (fill: NodeStatusFill, shape: NodeStatusShape, text: string)=>{
             nodes.map(RED.nodes.getNode)
+                .filter(n=>n)
                 .forEach((n) => {
                     n.status({fill, shape, text});
                 });
@@ -100,6 +101,27 @@ export default module.exports = ((RED)=>{
                 return internalSetTimeout(checkActiveState, 5000);
             }
         }
+        let shutdownWs = ()=>{
+            if(ws !== undefined) {
+                console.log(ws);
+                for (let event in wsEvents) {
+                    ws.off(event, wsEvents[event]);
+                }
+                ws.close();
+                ws = undefined;
+            }
+            let error = new ClientError('Websocket disconnected');
+            for (let id in handlers) {
+                console.log(id);
+                clearTimeout(handlers[id].timeout);
+                handlers[id].rej(error);
+                delete handlers[id];
+            }
+            timeouts.forEach((t)=>{
+                clearTimeout(t.t);
+            });
+            timeouts = [];
+        };
         let wsEvents = {
             error: (error: Error)=>{
                 this.error(error);
@@ -161,12 +183,18 @@ export default module.exports = ((RED)=>{
             if(nodes.indexOf(node.id) >= 0)
                 return;
             nodes.push(node.id);
+            if(ws === undefined || ws.readyState === WebSocket.CLOSED){
+                tryConnect();
+            }
         };
         this.detachNode = (node) => {
             let i = nodes.indexOf(node.id);
             if(i < 0)
                 return;
-            nodes = nodes.splice(i, 1);
+            nodes.splice(i, 1);
+            if(nodes.length === 0){
+                shutdownWs();
+            }
         }
         this.callAPI = (request, data, timeout: number = 5000) => new Promise((res, rej) => {
             if(ws === undefined || ws.readyState !== WebSocket.OPEN){
@@ -199,6 +227,7 @@ export default module.exports = ((RED)=>{
             });
         });
         let tryConnect = ()=>{
+            if(nodes.length === 0) return;
             try{
                 ws = new WebSocket(config.endpoint);
                 for (let event in wsEvents){
@@ -208,23 +237,8 @@ export default module.exports = ((RED)=>{
                 updateStatus('red', 'dot', 'invalid config');
             }
         }
-        tryConnect();
         this.on('close', (removed, done)=>{
-            for (let event in wsEvents){
-                ws.off(event, wsEvents[event]);
-            }
-            let error = new ClientError('Websocket disconnected');
-            for (let id in handlers) {
-                clearTimeout(handlers[id].timeout);
-                handlers[id].rej(error);
-                delete handlers[id];
-            }
-            timeouts.forEach((t)=>{
-                clearTimeout(t.t);
-            });
-            timeouts = [];
-            ws.close();
-            ws = undefined;
+            shutdownWs();
             done();
         });
     };
