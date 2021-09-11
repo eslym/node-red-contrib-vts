@@ -82,7 +82,6 @@ export default module.exports = ((RED)=>{
                     internalSetTimeout(tryAuth, 1);
                 }
             } catch (e){
-                this.error(e);
                 updateStatus('red', 'dot', 'unauthenticated');
                 internalSetTimeout(tryAuth, 20000);
             }
@@ -96,7 +95,6 @@ export default module.exports = ((RED)=>{
                 }
                 return tryAuth();
             } catch (e){
-                this.error(e);
                 updateStatus('red', 'dot', 'error');
                 return internalSetTimeout(checkActiveState, 5000);
             }
@@ -124,7 +122,6 @@ export default module.exports = ((RED)=>{
         };
         let wsEvents = {
             error: (error: Error)=>{
-                this.error(error);
                 updateStatus('red', 'dot', 'error');
             },
             message: (data: WebSocket.Data)=>{
@@ -156,7 +153,6 @@ export default module.exports = ((RED)=>{
                         }
                     }
                 } catch (error) {
-                    this.error(error);
                     ws.close();
                 }
             },

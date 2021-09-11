@@ -34,10 +34,7 @@
         outputs: 2,
         exportable: true,
         label: function () {
-            if(this.requestsrc === 'str'){
-                return this.request;
-            }
-            return this.name || 'VTS Request';
+            return this.name || (this.requestsrc === 'str' ? this.request : 'VTS Request');
         },
         oneditprepare: function () {
             $('#node-input-request').typedInput({
@@ -67,5 +64,5 @@
     <input id="node-input-payloadsrc" type="hidden"/>
 </script>
 <script type="text/html" data-help-name="{{basename}}">
-<p>Please refer to <a href="https://github.com/DenchiSoft/VTubeStudio">VTube Studio API Doc</a></p>
+    <p>Please refer to <a href="https://github.com/DenchiSoft/VTubeStudio">VTube Studio API Doc, the request payload will map to <code>data</code> in the actual payload</a></p>
 </script>
